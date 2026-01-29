@@ -1,0 +1,374 @@
+{
+	"info": {
+		"_postman_id": "5d3d57f3-1145-45da-af94-88f1f83a8d6a",
+		"name": "ERP_AERO REST API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16548060",
+		"_collection_link": "https://planetary-escape-446557.postman.co/workspace/4efc2da3-cc41-4014-8998-96956c394470/collection/16548060-5d3d57f3-1145-45da-af94-88f1f83a8d6a?action=share&source=collection_link&creator=16548060"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Signup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try {",
+									"  const json = pm.response.json();",
+									"  if (json.access_token) pm.collectionVariables.set('accessToken', json.access_token);",
+									"  if (json.refresh_token) pm.collectionVariables.set('refreshToken', json.refresh_token);",
+									"} catch (e) {",
+									"    console.error(e);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"user@example.com\",\n  \"password\": \"pass123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/signup",
+							"host": ["{{baseUrl}}"],
+							"path": ["signup"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Signin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try {",
+									"  const json = pm.response.json();",
+									"  if (json.access_token) pm.collectionVariables.set('accessToken', json.access_token);",
+									"  if (json.refresh_token) pm.collectionVariables.set('refreshToken', json.refresh_token);",
+									"} catch (e) {",
+									"    console.error(e);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"user@example.com\",\n  \"password\": \"pass123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/signin",
+							"host": ["{{baseUrl}}"],
+							"path": ["signin"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try {",
+									"  const json = pm.response.json();",
+									"  if (json.access_token) pm.collectionVariables.set('accessToken', json.access_token);",
+									"  if (json.refresh_token) pm.collectionVariables.set('refreshToken', json.refresh_token);",
+									"} catch (e) {",
+									"    console.error(e);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refresh_token\": \"{{refreshToken}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/signin/new_token",
+							"host": ["{{baseUrl}}"],
+							"path": ["signin", "new_token"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Info",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/info",
+							"host": ["{{baseUrl}}"],
+							"path": ["info"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/logout",
+							"host": ["{{baseUrl}}"],
+							"path": ["logout"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Files",
+			"item": [
+				{
+					"name": "Upload file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try {",
+									"  const json = pm.response.json();",
+									"  if (json.id) pm.collectionVariables.set('fileId', String(json.id));",
+									"} catch (e) {",
+									"    console.error(e);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/user/Downloads/ERP_AERO REST API.postman_collection.json"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/file/upload",
+							"host": ["{{baseUrl}}"],
+							"path": ["file", "upload"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List files (pagination)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/file/list?list_size=10&page=1",
+							"host": ["{{baseUrl}}"],
+							"path": ["file", "list"],
+							"query": [
+								{
+									"key": "list_size",
+									"value": "10"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get file info by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/file/{{fileId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["file", "{{fileId}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download file by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/file/download/{{fileId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["file", "download", "{{fileId}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update file by id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/user/Downloads/invite_20260122_010813.txt"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/file/update/{{fileId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["file", "update", "{{fileId}}"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete file by id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/file/delete/{{fileId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["file", "delete", "{{fileId}}"]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [""]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [""]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000"
+		},
+		{
+			"key": "accessToken",
+			"value": ""
+		},
+		{
+			"key": "refreshToken",
+			"value": ""
+		},
+		{
+			"key": "fileId",
+			"value": ""
+		}
+	]
+}

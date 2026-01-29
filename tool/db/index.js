@@ -1,9 +1,10 @@
 const mysql = require('mysql2/promise');
 
-// Пул подключений к MySQL.
+// Функция-инициализатор пула подключений к MySQL.
+// Вызывается один раз при старте сервера, возвращает пул (db),
 let pool = null;
 
-async function getPool() {
+async function initDb() {
 	if (!pool) {
 		pool = mysql.createPool({
 			host: process.env.DB_HOST,
@@ -15,10 +16,7 @@ async function getPool() {
 			queueLimit: 0,
 		});
 	}
-	// Возвращаем один и тот же пул для всех модулей.
 	return pool;
 }
 
-module.exports = {
-	getPool,
-};
+module.exports = initDb;

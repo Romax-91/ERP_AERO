@@ -10,50 +10,52 @@ var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth');
 var filesRouter = require('./routes/files');
 
-var app = express();
+async function App(db) {
+	var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+	// view engine setup
+	app.set('views', path.join(__dirname, 'views'));
+	app.set('view engine', 'jade');
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+	app.use(logger('dev'));
+	app.use(express.json());
+	app.use(express.urlencoded({ extended: false }));
+	app.use(cookieParser());
+	app.use(express.static(path.join(__dirname, 'public')));
 
-// CORS для доступа с любого домена
-app.use(
-	cors({
-		origin: '*',
-	})
-);
+	// CORS для доступа с любого домена
+	app.use(
+		cors({
+			origin: '*',
+		})
+	);
 
-// Папка для файлов
-const uploads = process.env.UPLOAD_DIR || 'uploads';
-if (!fs.existsSync(uploads)) {
-	fs.mkdirSync(uploads, { recursive: true });
+	// Папка для файлов
+	const uploads = process.env.UPLOAD_DIR || 'uploads';
+	if (!fs.existsSync(uploads)) {
+		fs.mkdirSync(uploads, { recursive: true });
+	}
+
+	app.use('/', indexRouter);
+	// REST API
+	app.use('/', authRouter(db));
+	app.use('/file', filesRouter(db));
+
+	// catch 404 and forward to error handler
+	app.use(function (req, res, next) {
+		next(createError(404));
+	});
+
+	// error handler
+	app.use(function (err, req, res, next) {
+		// set locals, only providing error in development
+		res.locals.message = err.message;
+		res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+		// render the error page
+		res.status(err.status || 500);
+		res.render('error');
+	});
+	return app;
 }
-
-app.use('/', indexRouter);
-// REST API
-app.use('/', authRouter);
-app.use('/file', filesRouter);
-
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-	next(createError(404));
-});
-
-// error handler
-app.use(function (err, req, res, next) {
-	// set locals, only providing error in development
-	res.locals.message = err.message;
-	res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-	// render the error page
-	res.status(err.status || 500);
-	res.render('error');
-});
-
-module.exports = app;
+module.exports = App;
